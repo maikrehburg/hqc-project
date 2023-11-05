@@ -1,0 +1,22 @@
+version: '3.8'
+services:
+  application-service:
+    build:
+      context: ./application-service
+      dockerfile: ./Dockerfile
+    stop_signal: SIGINT # flask requires SIGINT to stop gracefully (default stop signal from Compose is SIGTERM)
+    ports:
+      - '5000:5000'
+    volumes:
+      - ./application-service:/service
+    depends_on:
+      - decision-service
+  decision-service:
+    build:
+      context: ./decision-service
+      dockerfile: ./Dockerfile
+    stop_signal: SIGINT # flask requires SIGINT to stop gracefully (default stop signal from Compose is SIGTERM)
+    ports:
+      - '5100:5100'
+    volumes:
+      - ./decision-service:/service
